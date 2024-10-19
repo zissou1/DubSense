@@ -1,0 +1,34 @@
+﻿<Window x:Class="DubSense.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="Transparent"
+        Title="DubSense"
+        Height="400" Width="600"
+        ResizeMode="CanMinimize">
+
+    <Border Background="#272537">
+        <Grid>
+            <!-- Define Row Definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Image Display -->
+            <Image Name="CapturedImage" Stretch="Uniform" Margin="10" Grid.Row="0" Width="259" Height="111" />
+
+            <!-- Webhook URL Input -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="1">
+                <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
+                <TextBox Name="WebhookUrlTextBox" Width="400" Margin="5" />
+            </StackPanel>
+
+            <!-- Buttons at the Bottom -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="2">
+                <Button Name="StartButton" Content="Start Monitoring" Width="120" Margin="5" Click="StartButton_Click" />
+                <Button Name="StopButton" Content="Stop Monitoring" Width="120" Margin="5" Click="StopButton_Click" IsEnabled="False" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
