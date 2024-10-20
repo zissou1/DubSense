@@ -4,7 +4,7 @@
         Background="Transparent"
         Title="DubSense"
         Width="560"
-        Height="280"
+        Height="320"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
@@ -12,15 +12,14 @@
         <Style TargetType="Button" x:Key="RoundedButtonStyle">
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="1,-7" StartPoint="0,0">
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
                         <GradientStop Color="#FF847AF4"/>
                         <GradientStop Color="#FFB279F0" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -44,82 +43,99 @@
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="#FFB279F0"/>
                             </Trigger>
-
-                            <DataTrigger Binding="{Binding IsChecked, ElementName=AutoMonitorCheckBox}" Value="True">
-                                <Setter Property="IsEnabled" Value="False"/>
-                                <Setter Property="Foreground" Value="#DDDDDD"/>
-                            </DataTrigger>
-
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=AutoMonitorCheckBox}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Opacity" Value="0.5"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
-
-    <!-- TextBox Style with Rounded Corners -->
-    <Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}" 
+        <!-- TextBox Style with Rounded Corners -->
+        <Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 CornerRadius="4">
-                        <ScrollViewer x:Name="PART_ContentHost"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Background" Value="#272537"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="Gray"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="Height" Value="28"/>
-        <Setter Property="Margin" Value="5"/>
-    </Style>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#272537"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
     </Window.Resources>
 
     <Border Background="#272537" CornerRadius="0,0,8,8">
         <Grid>
             <!-- Define Row Definitions -->
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="0" Grid.Column="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,8,8">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5,5,5,0" Foreground="White" 
+      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="ViewCaptureCheckBox" Content="View captures" Margin="5,5,5,15" VerticalAlignment="Center" Foreground="White"
+          Checked="ViewCaptureCheckBox_Checked" Unchecked="ViewCaptureCheckBox_Unchecked"/>
+                    <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
+                    <Button Name="StartButton" Content="Start" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click" />
+                    <Button Name="StopButton" Content="Stop" Style="{StaticResource RoundedButtonStyle}" Click="StopButton_Click" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,8,8">
+                <!-- Image Display -->
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Name="StatusBlock" Text="Status:" Foreground="White" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" FontWeight="Light" />
+                        <TextBlock Name="StatusTextBlock" Text="Idle" Foreground="White" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" />
+                    </StackPanel>
+                    <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Grid.Row="1">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, ElementName=ViewCaptureCheckBox}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </StackPanel>
+            </Border>
             <!-- Bottom Panel with Rounded Corners -->
-            <Border Grid.Row="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8" Grid.ColumnSpan="2">
+            <Border Grid.Row="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5" Grid.Row="0">
 
                     <!-- Webhook URL Input -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
                         <TextBox Name="WebhookUrlTextBox" Width="360" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
-                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click"/>
+                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click" />
                     </StackPanel>
 
                     <!-- Buttons and Checkboxes -->
 
                 </StackPanel>
-            </Border>
-            <Border Grid.Row="1" Grid.Column="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-                    <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5,5,5,15" Foreground="White" 
-      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
-                    <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
-                    <Button Name="StartButton" Content="Start Monitoring" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click"/>
-                    <Button Name="StopButton" Content="Stop Monitoring" Style="{StaticResource RoundedButtonStyle}" IsEnabled="False" Click="StopButton_Click"/>
-                   
-                </StackPanel>
-            </Border>
-            <Border Grid.Row="1" Grid.Column="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8">
-                <!-- Image Display -->
-                <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Width="259" Height="111" Grid.Row="1"/>
             </Border>
         </Grid>
     </Border>

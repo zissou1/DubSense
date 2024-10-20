@@ -46,5 +46,17 @@ namespace DubSense.Properties {
                 this["AutoMonitor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ViewCapture {
+            get {
+                return ((bool)(this["ViewCapture"]));
+            }
+            set {
+                this["ViewCapture"] = value;
+            }
+        }
     }
 }

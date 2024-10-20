@@ -73,6 +73,9 @@ namespace DubSense
             // Load AutoMonitorCheckBox state
             AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
 
+            // Load ViewCaptureCheckBox state
+            ViewCaptureCheckBox.IsChecked = Properties.Settings.Default.ViewCapture;
+
             // Check auto-start status
             CheckAutoStartStatus();
 
@@ -137,6 +140,17 @@ namespace DubSense
                 System.Windows.MessageBox.Show("Error setting auto-start: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void ViewCaptureCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ViewCapture = true;
+            Properties.Settings.Default.Save();
+        }
+
+        private void ViewCaptureCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ViewCapture = false;
+            Properties.Settings.Default.Save();
+        }
         private void AutoStartCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             SetAutoStart(true); // Enable auto-start with Windows
@@ -155,6 +169,16 @@ namespace DubSense
             // Save the AutoMonitorCheckBox state
             Properties.Settings.Default.AutoMonitor = isChecked;
             Properties.Settings.Default.Save();
+
+            // Update status text
+            if (isChecked)
+            {
+                UpdateStatus("Waiting for CoD to start...");
+            }
+            else
+            {
+                UpdateStatus("Idle");
+            }
         }
         private void InitializeProcessCheckTimer()
         {
@@ -179,9 +203,14 @@ namespace DubSense
                 }
             }
         }
+        private void UpdateStatus(string status)
+        {
+            StatusTextBlock.Text = status;
+        }
         private void StartMonitoring()
         {
             SaveSettings();
+            UpdateStatus("Monitoring");
 
             if (string.IsNullOrEmpty(WebhookUrlTextBox.Text.Trim()))
             {
@@ -213,6 +242,7 @@ namespace DubSense
         private void StopMonitoring()
         {
             captureTimer.Stop();
+            UpdateStatus("Idle");
 
             if (ocrEngine != null)
             {
@@ -486,7 +516,19 @@ namespace DubSense
         {
             WebhookUrlTextBox.Text = Properties.Settings.Default.WebhookUrl;
             AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
+            ViewCaptureCheckBox.IsChecked = Properties.Settings.Default.ViewCapture;
+
+            // Update status text if AutoMonitorCheckBox is checked
+            if (AutoMonitorCheckBox.IsChecked == true)
+            {
+                UpdateStatus("Waiting for CoD to start...");
+            }
+            else
+            {
+                UpdateStatus("Idle");
+            }
         }
+
 
         // Save settings when the webhook URL changes or monitoring starts
         private void SaveSettings()
