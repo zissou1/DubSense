@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Background="Transparent"
         Title="DubSense"
-        Height="400" Width="600"
+        Width="600"
+        Height="300"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
@@ -54,6 +55,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+    <!-- TextBox Style with Rounded Corners -->
+    <Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="4">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="#272537"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
     </Window.Resources>
 
     <Border Background="#272537" CornerRadius="0,0,8,8">
@@ -72,7 +97,7 @@
                     <!-- Webhook URL Input -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
-                        <TextBox Name="WebhookUrlTextBox" Width="400" Margin="5"/>
+                        <TextBox Name="WebhookUrlTextBox" Width="400" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <!-- Buttons and Checkboxes -->
