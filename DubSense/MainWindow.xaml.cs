@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Interop;
 using Tesseract;
+using System.Diagnostics;
 
 namespace DubSense
 {
@@ -20,7 +21,7 @@ namespace DubSense
         private readonly TimeSpan webhookCooldown = TimeSpan.FromSeconds(15);
         private TesseractEngine ocrEngine = null!;
         private readonly object ocrLock = new object(); // Lock for thread safety
-
+        private DispatcherTimer processCheckTimer = new DispatcherTimer();
         // NotifyIcon for system tray
         private Forms.NotifyIcon _notifyIcon = null!;
 
@@ -33,14 +34,104 @@ namespace DubSense
             InitializeCaptureTimer();
             LoadSettings();
             InitializeNotifyIcon();
+            InitializeProcessCheckTimer();
 
             // Handle window state changes
             this.StateChanged += MainWindow_StateChanged;
 
             // Handle window closing
             this.Closing += MainWindow_Closing;
+
+            // Handle AutoMonitorCheckBox state changes
+            AutoMonitorCheckBox.Checked += AutoMonitorCheckBox_CheckedChanged;
+            AutoMonitorCheckBox.Unchecked += AutoMonitorCheckBox_CheckedChanged;
+        }
+        private void AutoMonitorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            bool isChecked = AutoMonitorCheckBox.IsChecked == true;
+            StartButton.IsEnabled = !isChecked;
+            StopButton.IsEnabled = !isChecked;
+        }
+        private void InitializeProcessCheckTimer()
+        {
+            processCheckTimer.Interval = TimeSpan.FromSeconds(5); // Check every 5 seconds
+            processCheckTimer.Tick += ProcessCheckTimer_Tick;
+            processCheckTimer.Start();
         }
 
+        private void ProcessCheckTimer_Tick(object? sender, EventArgs e)
+        {
+            if (AutoMonitorCheckBox.IsChecked == true)
+            {
+                bool isCodRunning = Process.GetProcessesByName("cod").Length > 0;
+
+                if (isCodRunning && !captureTimer.IsEnabled)
+                {
+                    StartMonitoring();
+                }
+                else if (!isCodRunning && captureTimer.IsEnabled)
+                {
+                    StopMonitoring();
+                }
+            }
+        }
+        private void StartMonitoring()
+        {
+            SaveSettings();
+
+            if (string.IsNullOrEmpty(WebhookUrlTextBox.Text.Trim()))
+            {
+                System.Windows.MessageBox.Show("Please enter a valid webhook URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string tessDataPath = System.IO.Path.Combine(baseDir, "tessdata");
+
+                ocrEngine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default);
+                ocrEngine.SetVariable("tessedit_char_whitelist", "CTO");
+                ocrEngine.DefaultPageSegMode = PageSegMode.SingleWord;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Error initializing OCR engine: {ex.Message}\n{ex.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            captureTimer.Start();
+            StartButton.IsEnabled = false;
+            StopButton.IsEnabled = true;
+            WebhookUrlTextBox.IsEnabled = false;
+        }
+
+        private void StopMonitoring()
+        {
+            captureTimer.Stop();
+
+            if (ocrEngine != null)
+            {
+                ocrEngine.Dispose();
+                ocrEngine = null!;
+            }
+
+            StartButton.IsEnabled = true;
+            StopButton.IsEnabled = false;
+            WebhookUrlTextBox.IsEnabled = true;
+        }
+
+        // Event handler for Start Monitoring button
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            StartMonitoring();
+        }
+
+        // Event handler for Stop Monitoring button
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            StopMonitoring();
+        }
         private void InitializeCaptureTimer()
         {
             captureTimer.Interval = TimeSpan.FromMilliseconds(2500); // 2.5 seconds
@@ -279,56 +370,7 @@ namespace DubSense
         }
 
         // Event handler for Start Monitoring button
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Save the webhook URL before starting
-            SaveSettings();
 
-            // Validate the webhook URL
-            if (string.IsNullOrEmpty(WebhookUrlTextBox.Text.Trim()))
-            {
-                System.Windows.MessageBox.Show("Please enter a valid webhook URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            // Initialize TesseractEngine
-            try
-            {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string tessDataPath = System.IO.Path.Combine(baseDir, "tessdata");
-
-                ocrEngine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default);
-                ocrEngine.SetVariable("tessedit_char_whitelist", "CTO");
-                ocrEngine.DefaultPageSegMode = PageSegMode.SingleWord; // Optimize for single word
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error initializing OCR engine: {ex.Message}\n{ex.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            captureTimer.Start();
-            StartButton.IsEnabled = false;
-            StopButton.IsEnabled = true;
-            WebhookUrlTextBox.IsEnabled = false;
-        }
-
-        // Event handler for Stop Monitoring button
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-        {
-            captureTimer.Stop();
-
-            // Dispose of TesseractEngine
-            if (ocrEngine != null)
-            {
-                ocrEngine.Dispose();
-                ocrEngine = null!;
-            }
-
-            StartButton.IsEnabled = true;
-            StopButton.IsEnabled = false;
-            WebhookUrlTextBox.IsEnabled = true;
-        }
 
         // Load settings when the application starts
         private void LoadSettings()
