@@ -2,20 +2,19 @@
 
 # DubSense
 
-DubSense is a Windows application that monitors a specific portion of the screen for the text "CTO" using Optical Character Recognition (OCR) and sends a webhook notification when the text is detected. The application minimizes to the system tray and can automatically start and stop monitoring based on the presence of a specific process.
+DubSense is a Windows application that monitors a specific portion of the screen (when you are playing Call of Duty Warzone) for the text "CTO" in "VICTORY" using Optical Character Recognition (OCR) and sends a webhook notification when a victory is detected. The application minimizes to the system tray and can automatically start and stop monitoring based on if Call of Duty is running on your system or not.
 
 ## Features
 
 - **OCR Monitoring**: Uses Tesseract OCR to detect the text "CTO" in a specified screen area.
 - **Webhook Notifications**: Sends a webhook notification when the text is detected.
-- **Auto Monitoring**: Automatically starts and stops monitoring based on the presence of a specific process.
+- **Auto Monitoring**: Automatically starts and stops monitoring based on if Call of Duty is running on your system or not.
 - **System Tray Integration**: Minimizes to the system tray and provides context menu options for restoring or exiting the application.
 - **Settings Persistence**: Saves and loads the webhook URL from application settings.
 
 ## Requirements
 
 - .NET 8.0
-- Tesseract OCR data files (`tessdata` folder with `eng.traineddata`)
 
 ## Installation
 
@@ -34,10 +33,10 @@ DubSense is a Windows application that monitors a specific portion of the screen
     - Enter a valid webhook URL in the provided text box.
 
 3. **Start Monitoring**:
-    - Click the "Start" button to begin monitoring the screen for the text "CTO".
+    - Click the "Start" button to begin monitoring the screen for a victory.
 
 4. **Auto Monitoring**:
-    - Check the "Auto Monitor" checkbox to enable automatic monitoring based on the presence of the "cod" process.
+    - Check the "Auto Monitor" checkbox to enable automatic monitoring based on the presence of the cod.exe process.
 
 5. **Minimize to Tray**:
     - Minimize the application to the system tray. Right-click the tray icon for options to restore or exit the application.
