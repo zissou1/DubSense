@@ -45,12 +45,19 @@ namespace DubSense
             // Handle AutoMonitorCheckBox state changes
             AutoMonitorCheckBox.Checked += AutoMonitorCheckBox_CheckedChanged;
             AutoMonitorCheckBox.Unchecked += AutoMonitorCheckBox_CheckedChanged;
+
+            // Load AutoMonitorCheckBox state
+            AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
         }
         private void AutoMonitorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             bool isChecked = AutoMonitorCheckBox.IsChecked == true;
             StartButton.IsEnabled = !isChecked;
             StopButton.IsEnabled = !isChecked;
+
+            // Save the AutoMonitorCheckBox state
+            Properties.Settings.Default.AutoMonitor = isChecked;
+            Properties.Settings.Default.Save();
         }
         private void InitializeProcessCheckTimer()
         {
@@ -376,12 +383,14 @@ namespace DubSense
         private void LoadSettings()
         {
             WebhookUrlTextBox.Text = Properties.Settings.Default.WebhookUrl;
+            AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
         }
 
         // Save settings when the webhook URL changes or monitoring starts
         private void SaveSettings()
         {
             Properties.Settings.Default.WebhookUrl = WebhookUrlTextBox.Text.Trim();
+            Properties.Settings.Default.AutoMonitor = AutoMonitorCheckBox.IsChecked == true;
             Properties.Settings.Default.Save();
         }
 
