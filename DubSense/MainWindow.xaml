@@ -6,35 +6,88 @@
         Height="400" Width="600"
         ResizeMode="CanMinimize">
 
-    <Border Background="#272537">
+    <Window.Resources>
+        <!-- Button Style with Rounded Corners and Gradient Background -->
+        <Style TargetType="Button" x:Key="RoundedButtonStyle">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,-7" StartPoint="0,0">
+                        <GradientStop Color="#FF847AF4"/>
+                        <GradientStop Color="#FFB279F0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderBrush="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF847AF4"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FFB279F0"/>
+                            </Trigger>
+
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=AutoMonitorCheckBox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter Property="Foreground" Value="#DDDDDD"/>
+                            </DataTrigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#272537" CornerRadius="0,0,8,8">
         <Grid>
             <!-- Define Row Definitions -->
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- This takes up the remaining space for the image -->
                 <RowDefinition Height="*" />
-
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <!-- The panel at the bottom -->
             </Grid.RowDefinitions>
+            <!-- Bottom Panel with Rounded Corners -->
+            <Border Grid.Row="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5" Grid.Row="0">
 
+                    <!-- Webhook URL Input -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
+                        <TextBox Name="WebhookUrlTextBox" Width="400" Margin="5"/>
+                    </StackPanel>
+
+                    <!-- Buttons and Checkboxes -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <Button Name="StartButton" Content="Start Monitoring" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click"/>
+                        <Button Name="StopButton" Content="Stop Monitoring" Style="{StaticResource RoundedButtonStyle}" IsEnabled="False" Click="StopButton_Click"/>
+                        <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
+                        <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5" Foreground="White" 
+                              Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
             <!-- Image Display -->
-            <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Grid.Row="0" Width="259" Height="111" />
-            
-            <!-- Webhook URL Input -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5" Grid.Row="1">
-                <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
-                <TextBox Name="WebhookUrlTextBox" Width="400" Margin="5" />
-            </StackPanel>
-
-            <!-- Buttons at the Bottom -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="3">
-                <!-- Auto Start Checkbox -->
-                <CheckBox Name="AutoStartCheckBox" Content="Start with Windows" Foreground="White" Margin="5" VerticalAlignment="Center" 
-          Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked"/>
-
-                <Button Name="StartButton" Content="Start Monitoring" Width="120" Margin="5" Click="StartButton_Click" />
-                <Button Name="StopButton" Content="Stop Monitoring" Width="120" Margin="5" Click="StopButton_Click" IsEnabled="False" />
-                <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor Call of Duty" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"/>
-            </StackPanel>
+            <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Width="259" Height="111" Grid.Row="1"/>
         </Grid>
     </Border>
 </Window>
