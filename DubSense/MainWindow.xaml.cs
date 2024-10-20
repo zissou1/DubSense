@@ -25,6 +25,29 @@ namespace DubSense
         // NotifyIcon for system tray
         private Forms.NotifyIcon _notifyIcon = null!;
 
+
+        const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+        const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+
+        [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+        private void SetWindowThemeAttribute()
+        {
+            var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            bool isDarkMode = true;
+            int attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
+
+            // For Windows versions before 1903 (build 18362)
+            if (Environment.OSVersion.Version.Build < 18362)
+            {
+                attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
+            }
+
+            int useImmersiveDarkMode = isDarkMode ? 1 : 0;
+            DwmSetWindowAttribute(hwnd, attribute, ref useImmersiveDarkMode, Marshal.SizeOf(typeof(int)));
+        }
+
         // Flag to determine if the app is closing
         private bool _isExit = false;
 
@@ -48,6 +71,12 @@ namespace DubSense
 
             // Load AutoMonitorCheckBox state
             AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
+
+            Loaded += MainWindow_Loaded;
+        }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetWindowThemeAttribute();
         }
         private void AutoMonitorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
