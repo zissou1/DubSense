@@ -27,9 +27,13 @@
 
             <!-- Buttons at the Bottom -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="3">
+                <!-- Auto Start Checkbox -->
+                <CheckBox Name="AutoStartCheckBox" Content="Start with Windows" Foreground="White" Margin="5" VerticalAlignment="Center" 
+          Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked"/>
+
                 <Button Name="StartButton" Content="Start Monitoring" Width="120" Margin="5" Click="StartButton_Click" />
                 <Button Name="StopButton" Content="Stop Monitoring" Width="120" Margin="5" Click="StopButton_Click" IsEnabled="False" />
-                <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor Call of Duty" Margin="50,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"/>
+                <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor Call of Duty" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using System.Windows.Interop;
 using Tesseract;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace DubSense
 {
@@ -72,11 +73,77 @@ namespace DubSense
             // Load AutoMonitorCheckBox state
             AutoMonitorCheckBox.IsChecked = Properties.Settings.Default.AutoMonitor;
 
+            // Check auto-start status
+            CheckAutoStartStatus();
+
             Loaded += MainWindow_Loaded;
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetWindowThemeAttribute();
+        }
+        private void CheckAutoStartStatus()
+        {
+            try
+            {
+                string appName = "DubSense";
+                using (RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", false))
+                {
+                    if (rk != null && rk.GetValue(appName) != null)
+                    {
+                        AutoStartCheckBox.IsChecked = true; // Auto-start is enabled
+                    }
+                    else
+                    {
+                        AutoStartCheckBox.IsChecked = false; // Auto-start is disabled
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error checking auto-start status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void SetAutoStart(bool enable)
+        {
+            try
+            {
+                string appName = "DubSense";
+                string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+                using (RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true))
+                {
+                    if (rk != null)
+                    {
+                        if (enable)
+                        {
+                            // Add the application to autostart
+                            rk.SetValue(appName, appPath);
+                        }
+                        else
+                        {
+                            // Remove the application from autostart
+                            if (rk.GetValue(appName) != null)
+                            {
+                                rk.DeleteValue(appName, false);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error setting auto-start: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void AutoStartCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SetAutoStart(true); // Enable auto-start with Windows
+        }
+
+        private void AutoStartCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SetAutoStart(false); // Disable auto-start with Windows
         }
         private void AutoMonitorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
