@@ -110,6 +110,7 @@ namespace DubSense
             {
                 string appName = "DubSense";
                 string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                string appExePath = Path.ChangeExtension(appPath, ".exe");
 
                 using (RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true))
                 {
@@ -118,7 +119,7 @@ namespace DubSense
                         if (enable)
                         {
                             // Add the application to autostart
-                            rk.SetValue(appName, appPath);
+                            rk.SetValue(appName, appExePath);
                         }
                         else
                         {
