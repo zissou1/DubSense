@@ -18,6 +18,8 @@ DubSense is a Windows application that monitors a specific portion of the screen
 
 ## Installation
 
+Download and unzip from Releases, or:
+
 1. **Clone the repository**:
 
 2. **Build the project**:
@@ -58,10 +60,6 @@ DubSense is a Windows application that monitors a specific portion of the screen
 
 3. **Build the solution**:
     - Build the solution using Visual Studio.
-
-### Running the Application
-
-- Press `F5` in Visual Studio to run the application in debug mode.
 
 ## Contributing
 
