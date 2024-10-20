@@ -28,9 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\dubsense.ico">
+    <Content Include="Assets\dubsense.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
