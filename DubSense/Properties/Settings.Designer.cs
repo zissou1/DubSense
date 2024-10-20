@@ -25,7 +25,7 @@ namespace DubSense.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.0.1.47:8123/api/webhook/dubsense-ANjl3h7PSIZKDVdHuD4CNqU6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://...")]
         public string WebhookUrl {
             get {
                 return ((string)(this["WebhookUrl"]));
