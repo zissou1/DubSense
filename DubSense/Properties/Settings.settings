@@ -1,9 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CTODetector.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DubSense.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="WebhookUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://10.0.1.47:8123/api/webhook/dubsense-ANjl3h7PSIZKDVdHuD4CNqU6</Value>
+      <Value Profile="(Default)">http://...</Value>
     </Setting>
   </Settings>
 </SettingsFile>
