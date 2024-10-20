@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Background="Transparent"
         Title="DubSense"
-        Width="600"
-        Height="300"
+        Width="560"
+        Height="280"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
@@ -27,7 +27,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -86,33 +86,41 @@
             <!-- Define Row Definitions -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!-- This takes up the remaining space for the image -->
                 <RowDefinition Height="*" />
-                <!-- The panel at the bottom -->
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <!-- Bottom Panel with Rounded Corners -->
-            <Border Grid.Row="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8">
+            <Border Grid.Row="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5" Grid.Row="0">
 
                     <!-- Webhook URL Input -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
-                        <TextBox Name="WebhookUrlTextBox" Width="400" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
+                        <TextBox Name="WebhookUrlTextBox" Width="360" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
+                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click"/>
                     </StackPanel>
 
                     <!-- Buttons and Checkboxes -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <Button Name="StartButton" Content="Start Monitoring" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click"/>
-                        <Button Name="StopButton" Content="Stop Monitoring" Style="{StaticResource RoundedButtonStyle}" IsEnabled="False" Click="StopButton_Click"/>
-                        <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
-                        <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5" Foreground="White" 
-                              Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
-                    </StackPanel>
 
                 </StackPanel>
             </Border>
-            <!-- Image Display -->
-            <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Width="259" Height="111" Grid.Row="1"/>
+            <Border Grid.Row="1" Grid.Column="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5,5,5,15" Foreground="White" 
+      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
+                    <Button Name="StartButton" Content="Start Monitoring" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click"/>
+                    <Button Name="StopButton" Content="Stop Monitoring" Style="{StaticResource RoundedButtonStyle}" IsEnabled="False" Click="StopButton_Click"/>
+                   
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8">
+                <!-- Image Display -->
+                <Image Name="CapturedImage" Stretch="Uniform" Margin="5" Width="259" Height="111" Grid.Row="1"/>
+            </Border>
         </Grid>
     </Border>
 </Window>

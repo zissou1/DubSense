@@ -236,6 +236,11 @@ namespace DubSense
         {
             StopMonitoring();
         }
+        // Event handler for Stop Monitoring button
+        private async void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            await SendWebhookAsync();
+        }
         private void InitializeCaptureTimer()
         {
             captureTimer.Interval = TimeSpan.FromMilliseconds(2500); // 2.5 seconds
