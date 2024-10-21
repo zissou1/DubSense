@@ -12,6 +12,7 @@ using System.Windows.Interop;
 using Tesseract;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Windows.Controls;
 
 namespace DubSense
 {
@@ -76,6 +77,12 @@ namespace DubSense
             // Load ViewCaptureCheckBox state
             ViewCaptureCheckBox.IsChecked = Properties.Settings.Default.ViewCapture;
 
+            // Load Webhook URL
+            WebhookUrlTextBox.Text = Properties.Settings.Default.WebhookUrl;
+
+            // Add event handler for WebhookUrlTextBox text change
+            WebhookUrlTextBox.TextChanged += WebhookUrlTextBox_TextChanged;
+
             // Check auto-start status
             CheckAutoStartStatus();
 
@@ -84,6 +91,12 @@ namespace DubSense
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetWindowThemeAttribute();
+        }
+
+        private void WebhookUrlTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Properties.Settings.Default.WebhookUrl = WebhookUrlTextBox.Text;
+            Properties.Settings.Default.Save();
         }
         private void CheckAutoStartStatus()
         {
@@ -528,7 +541,6 @@ namespace DubSense
                 UpdateStatus("Idle");
             }
         }
-
 
         // Save settings when the webhook URL changes or monitoring starts
         private void SaveSettings()
