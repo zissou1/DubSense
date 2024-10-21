@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <None Remove="Assets\dubsense.ico" />
+    <None Remove="Assets\DubSense.png" />
+    <None Remove="Assets\DubSense_80x54.png" />
     <None Remove="tessdata\eng.traineddata" />
   </ItemGroup>
 
@@ -58,6 +60,12 @@
     <Content Include="tessdata\eng.traineddata">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\DubSense_80x54.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -88,6 +88,7 @@ namespace DubSense
 
             Loaded += MainWindow_Loaded;
         }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetWindowThemeAttribute();
@@ -119,6 +120,17 @@ namespace DubSense
             {
                 System.Windows.MessageBox.Show("Error checking auto-start status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void MonitorToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            StartMonitoring();
+            MonitorToggleButton.Content = "Stop";
+        }
+
+        private void MonitorToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            StopMonitoring();
+            MonitorToggleButton.Content = "Start";
         }
         private void SetAutoStart(bool enable)
         {
@@ -176,8 +188,7 @@ namespace DubSense
         private void AutoMonitorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             bool isChecked = AutoMonitorCheckBox.IsChecked == true;
-            StartButton.IsEnabled = !isChecked;
-            StopButton.IsEnabled = !isChecked;
+            MonitorToggleButton.IsEnabled = !isChecked;
 
             // Save the AutoMonitorCheckBox state
             Properties.Settings.Default.AutoMonitor = isChecked;
@@ -204,7 +215,7 @@ namespace DubSense
         {
             if (AutoMonitorCheckBox.IsChecked == true)
             {
-                bool isCodRunning = Process.GetProcessesByName("cod").Length > 0;
+                bool isCodRunning = Process.GetProcessesByName("cod23-cod").Length > 0;
 
                 if (isCodRunning && !captureTimer.IsEnabled)
                 {
@@ -247,8 +258,6 @@ namespace DubSense
             }
 
             captureTimer.Start();
-            StartButton.IsEnabled = false;
-            StopButton.IsEnabled = true;
             WebhookUrlTextBox.IsEnabled = false;
         }
 
@@ -263,8 +272,6 @@ namespace DubSense
                 ocrEngine = null!;
             }
 
-            StartButton.IsEnabled = true;
-            StopButton.IsEnabled = false;
             WebhookUrlTextBox.IsEnabled = true;
         }
 
