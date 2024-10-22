@@ -4,7 +4,7 @@
         Background="Transparent"
         Title="DubSense"
         Width="560"
-        Height="320"
+        Height="340"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
@@ -30,20 +30,21 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="4" 
-                                BorderBrush="Transparent">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" />
-                        </Border>
+                        <Grid>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                    CornerRadius="4" 
+                                    BorderBrush="Transparent">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FF847AF4"/>
+                                <Setter TargetName="border" Property="Background" Value="#FFB279F0"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFB279F0"/>
+                                <Setter TargetName="border" Property="Background" Value="#FF847AF4"/>
                             </Trigger>
-
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -78,18 +79,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="4" 
-                                BorderBrush="Transparent">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" />
-                        </Border>
+                        <Grid>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                    CornerRadius="4" 
+                                    BorderBrush="Transparent">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FF847AF4"/>
+                                <Setter TargetName="border" Property="Background" Value="#FFB279F0"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFB279F0"/>
+                                <Setter TargetName="border" Property="Background" Value="#FF847AF4"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -134,15 +137,15 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Row="0" Grid.Column="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,0,8">
-                <StackPanel Orientation="Vertical" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-                    <Image Source="Assets/DubSense_80x54.png" Width="80" Margin="5,5,5,13"/>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <Image Source="Assets/DubSense_200x136.png" Stretch="None" Margin="5,5,5,15"/>
                     <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5,5,5,0" Foreground="White" 
-      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center"/>
+      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center" Cursor="Hand"/>
                     <CheckBox x:Name="ViewCaptureCheckBox" Content="View captures" Margin="5,5,5,5" VerticalAlignment="Center" Foreground="White"
-          Checked="ViewCaptureCheckBox_Checked" Unchecked="ViewCaptureCheckBox_Unchecked"/>
-                    <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White"/>
+          Checked="ViewCaptureCheckBox_Checked" Unchecked="ViewCaptureCheckBox_Unchecked" Cursor="Hand"/>
+                    <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White" Cursor="Hand"/>
                     <ToggleButton Name="MonitorToggleButton" Content="Start" Style="{StaticResource RoundedToggleButtonStyle}" 
-                                  Checked="MonitorToggleButton_Checked" Unchecked="MonitorToggleButton_Unchecked" />
+                                  Checked="MonitorToggleButton_Checked" Unchecked="MonitorToggleButton_Unchecked" Cursor="Hand" />
                 </StackPanel>
             </Border>
             <Border Grid.Row="0" Grid.Column="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,8,8">
@@ -173,7 +176,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
                         <TextBox Name="WebhookUrlTextBox" Width="360" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
-                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click" />
+                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click" Cursor="Hand" />
                     </StackPanel>
 
                     <!-- Buttons and Checkboxes -->

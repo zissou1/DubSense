@@ -25,6 +25,9 @@
   <ItemGroup>
     <None Remove="Assets\dubsense.ico" />
     <None Remove="Assets\DubSense.png" />
+    <None Remove="Assets\DubSense_100x68.png" />
+    <None Remove="Assets\DubSense_200x136.png" />
+    <None Remove="Assets\DubSense_50x34.png" />
     <None Remove="Assets\DubSense_80x54.png" />
     <None Remove="tessdata\eng.traineddata" />
   </ItemGroup>
@@ -63,7 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\DubSense_80x54.png">
+    <Resource Include="Assets\DubSense_200x136.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
