@@ -5,8 +5,9 @@
 DubSense is a Windows application that monitors a specific portion of the screen (when you are playing Call of Duty Warzone) for the text "VICTORY" using Optical Character Recognition (OCR) and sends a webhook notification when a victory is detected. The application minimizes to the system tray and can automatically start and stop monitoring based on if Call of Duty is running on your system or not.
 
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/d0322401-6692-4488-af5f-9adacb517b78"/>
+    <img src="https://github.com/user-attachments/assets/81b69dad-92f4-4d38-ba08-4d3c586cb40d"/>
 </p>
+
 
 ## Features
 
