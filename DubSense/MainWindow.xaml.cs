@@ -179,6 +179,19 @@ namespace DubSense
                 System.Windows.MessageBox.Show("Error setting auto-start: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the settings popup
+            SettingsPopup.IsOpen = true;
+        }
+
+        private void CloseSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Close the settings popup
+            SettingsPopup.IsOpen = false;
+        }
+
         private void ViewCaptureCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.ViewCapture = true;

@@ -4,7 +4,7 @@
         Background="Transparent"
         Title="DubSense"
         Width="560"
-        Height="340"
+        Height="270"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
@@ -129,7 +129,6 @@
             <!-- Define Row Definitions -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="190" />
@@ -138,14 +137,15 @@
 
             <Border Grid.Row="0" Grid.Column="0" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,0,8">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-                    <Image Source="Assets/DubSense_200x136.png" Stretch="None" Margin="5,5,5,15"/>
-                    <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5,5,5,0" Foreground="White" 
-      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center" Cursor="Hand"/>
-                    <CheckBox x:Name="ViewCaptureCheckBox" Content="View captures" Margin="5,5,5,5" VerticalAlignment="Center" Foreground="White"
-          Checked="ViewCaptureCheckBox_Checked" Unchecked="ViewCaptureCheckBox_Unchecked" Cursor="Hand"/>
+                    <Image Source="Assets/DubSense_200x136.png" Stretch="None" Margin="5,5,5,60"/>
                     <CheckBox x:Name="AutoMonitorCheckBox" Content="Auto Monitor CoD" Margin="5" VerticalAlignment="Center" Foreground="White" Cursor="Hand"/>
-                    <ToggleButton Name="MonitorToggleButton" Content="Start" Style="{StaticResource RoundedToggleButtonStyle}" 
-                                  Checked="MonitorToggleButton_Checked" Unchecked="MonitorToggleButton_Unchecked" Cursor="Hand" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Style="{StaticResource RoundedButtonStyle}" Margin="5,5,0,5" Width="25" Height="25" Cursor="Hand" Click="SettingsButton_Click">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+                        <ToggleButton Name="MonitorToggleButton" Content="Start" Width="110" Style="{StaticResource RoundedToggleButtonStyle}" 
+                      Checked="MonitorToggleButton_Checked" Unchecked="MonitorToggleButton_Unchecked" Cursor="Hand" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border Grid.Row="0" Grid.Column="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,8,8,8">
@@ -168,21 +168,28 @@
                     </Image>
                 </StackPanel>
             </Border>
-            <!-- Bottom Panel with Rounded Corners -->
-            <Border Grid.Row="1" Background="#FF1A1925" CornerRadius="8" Padding="0" Margin="8,0,8,8" Grid.ColumnSpan="2">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5" Grid.Row="0">
 
-                    <!-- Webhook URL Input -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
-                        <TextBox Name="WebhookUrlTextBox" Width="360" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
-                        <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click" Cursor="Hand" />
+            <!-- Settings Popup -->
+            <Popup x:Name="SettingsPopup" Placement="Center" StaysOpen="False" AllowsTransparency="True">
+                <Border Background="#FF1A1925" CornerRadius="8" Padding="10" Margin="8" BorderBrush="#272537" BorderThickness="2.5">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.5"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                        <CheckBox x:Name="AutoStartCheckBox" Content="Start with Windows" Margin="5" Foreground="White" 
+                      Checked="AutoStartCheckBox_Checked" Unchecked="AutoStartCheckBox_Unchecked" VerticalAlignment="Center" Cursor="Hand"/>
+                        <CheckBox x:Name="ViewCaptureCheckBox" Content="View captures" Margin="5" VerticalAlignment="Center" Foreground="White"
+                      Checked="ViewCaptureCheckBox_Checked" Unchecked="ViewCaptureCheckBox_Unchecked" Cursor="Hand"/>
+                        <!-- Webhook URL Input -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                            <Label Content="Webhook URL:" Foreground="White" Margin="5" VerticalAlignment="Center" />
+                            <TextBox Name="WebhookUrlTextBox" Width="260" VerticalAlignment="Center" Style="{StaticResource RoundedTextBoxStyle}"/>
+                            <Button Name="TestButton" Width="40" Content="Test" Style="{StaticResource RoundedButtonStyle}" Click="TestButton_Click" Cursor="Hand" />
+                        </StackPanel>
+                        <Button Content="Close" Click="CloseSettingsButton_Click" Style="{StaticResource RoundedButtonStyle}" Cursor="Hand" Margin="5"/>
                     </StackPanel>
-
-                    <!-- Buttons and Checkboxes -->
-
-                </StackPanel>
-            </Border>
+                </Border>
+            </Popup>
         </Grid>
     </Border>
 </Window>
