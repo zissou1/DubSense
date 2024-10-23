@@ -13,11 +13,13 @@ using Tesseract;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Windows.Controls;
+using System.Threading;
 
 namespace DubSense
 {
     public partial class MainWindow : Window
     {
+        private static Mutex? _mutex = null;
         private DispatcherTimer captureTimer = new DispatcherTimer();
         private DateTime lastWebhookSent = DateTime.MinValue;
         private readonly TimeSpan webhookCooldown = TimeSpan.FromSeconds(15);
@@ -56,6 +58,18 @@ namespace DubSense
         public MainWindow()
         {
             InitializeComponent();
+            // Initialize the mutex
+            const string mutexName = "DubSenseAppMutex";
+            _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+
+            if (!isNewInstance)
+            {
+                // Another instance is already running
+                System.Windows.MessageBox.Show("Another instance of DubSense is already running.", "Instance Already Running", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.Application.Current.Shutdown();
+                return;
+            }
+
             InitializeCaptureTimer();
             LoadSettings();
             InitializeNotifyIcon();
@@ -215,7 +229,7 @@ namespace DubSense
         {
             if (AutoMonitorCheckBox.IsChecked == true)
             {
-                bool isCodRunning = Process.GetProcessesByName("cod23-cod").Length > 0;
+                bool isCodRunning = Process.GetProcessesByName("cod23-cod").Length > 0 || Process.GetProcessesByName("cod").Length > 0;
 
                 if (isCodRunning && !captureTimer.IsEnabled)
                 {
@@ -338,10 +352,10 @@ namespace DubSense
                 System.Windows.MessageBox.Show($"Failed to load custom icon. Using default icon.\nError: {ex.Message}", "Icon Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            _notifyIcon.Visible = false;
+            _notifyIcon.Visible = true; // Ensure the tray icon is always visible
 
             // Set tooltip
-            _notifyIcon.Text = "Victory Detector";
+            _notifyIcon.Text = "DubSense";
 
             // Add a context menu to the tray icon
             var contextMenu = new Forms.ContextMenuStrip();
@@ -361,6 +375,9 @@ namespace DubSense
             {
                 lastWebhookSent = DateTime.Now;
                 await SendWebhookAsync();
+
+                // Show notification
+                _notifyIcon.ShowBalloonTip(1000, "DubSense", "Victory detected!", Forms.ToolTipIcon.None);
             }
 
             capturedBitmap.Dispose();
@@ -462,8 +479,8 @@ namespace DubSense
                                 // Get the recognized text
                                 string text = page.GetText().Trim();
 
-                                // Check if the text is exactly "CTO"
-                                return text.Equals("CTO", StringComparison.InvariantCultureIgnoreCase);
+                                // Check if the text contains "CTO"
+                                return text.Contains("CTO", StringComparison.Ordinal);
                             }
                         }
                     }
@@ -564,7 +581,7 @@ namespace DubSense
             {
                 Hide();
                 _notifyIcon.Visible = true;
-                _notifyIcon.ShowBalloonTip(1000, "DubSense", "Application minimized to tray.", Forms.ToolTipIcon.Info);
+                _notifyIcon.ShowBalloonTip(1000, "DubSense", "Application minimized to tray.", Forms.ToolTipIcon.None);
             }
         }
 
@@ -573,7 +590,8 @@ namespace DubSense
         {
             Show();
             this.WindowState = WindowState.Normal;
-            _notifyIcon.Visible = false;
+            // Keep the tray icon visible even when the main window is shown
+            _notifyIcon.Visible = true;
         }
 
         // Exit the application gracefully
