@@ -315,7 +315,13 @@ namespace DubSense
         private void InitializeNotifyIcon()
         {
             _notifyIcon = new Forms.NotifyIcon();
-            _notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
+            _notifyIcon.MouseClick += (s, args) =>
+            {
+                if (args.Button == Forms.MouseButtons.Left)
+                {
+                    ShowMainWindow();
+                }
+            };
 
             // Set the custom icon
             try
