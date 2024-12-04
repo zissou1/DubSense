@@ -409,10 +409,10 @@ namespace DubSense
             double screenHeight = SystemParameters.PrimaryScreenHeight;
 
             // Calculate capture area
-            double captureHeight = screenHeight * 0.22;
+            double captureHeight = screenHeight * 0.18;
             double aspectRatio = 7.0 / 3.0;
             double captureWidth = captureHeight * aspectRatio;
-            double offsetX = (screenWidth - captureWidth) / 2 - (screenHeight * 0.06);
+            double offsetX = (screenWidth - captureWidth) / 2 - (screenHeight * 0.04);
             double offsetY = (screenHeight - captureHeight) / 2;
 
             // Define the capture rectangle
